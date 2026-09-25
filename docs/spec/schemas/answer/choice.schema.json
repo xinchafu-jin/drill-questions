@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "choice answer（第一階段草案）",
+  "description": "使用者提交的選擇題答案。selected 的每個 id 必須存在於題目的 options（語意檢查）。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["selected"],
+  "properties": {
+    "selected": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[a-z0-9]{1,8}$" },
+      "$comment": "〔待決 Q-J2〕若只允許單選，加 maxItems: 1。"
+    }
+  }
+}

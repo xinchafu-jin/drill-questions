@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "刷題系統題目檔（第一階段草案）",
+  "description": "一個 YAML 檔一題。欄位說明見 docs/spec/03-judge.md §3。語意檢查（id 是否存在、tags 不分大小寫不重複等）JSON Schema 無法表達，由後端匯入程式負責。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["subject", "unit", "judgeType", "difficulty", "device", "source", "license", "stem", "payload"],
+  "properties": {
+    "key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "$comment": "〔待決 Q-I3〕選 a（明確欄位）時改為 required 並加上格式規則；選 b（由檔案路徑推導）時刪除此欄位。"
+    },
+    "subject": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 32,
+      "$comment": "subject.code。〔待決 Q-M1、Q-M2〕"
+    },
+    "unit": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "$comment": "unit.code，科目內唯一。"
+    },
+    "judgeType": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 32,
+      "$comment": "可用值為後端已註冊的 Judge（第一階段：choice、fill），由匯入程式檢查。"
+    },
+    "difficulty": {
+      "type": "integer",
+      "$comment": "〔待決 Q-M3〕決定尺度後加上 minimum／maximum。"
+    },
+    "device": {
+      "type": "string",
+      "enum": ["mobile", "desktop"],
+      "$comment": "文件：device（手機／桌機）。〔待決 Q-M4〕是否加入 any。"
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "$comment": "適用版本，可省略。〔待決 Q-M5〕是否允許多個。"
+    },
+    "tags": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1, "maxLength": 64 }
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "$comment": "出處。〔待決 Q-I8〕格式。"
+    },
+    "license": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "$comment": "授權。〔待決 Q-I8〕格式。"
+    },
+    "stem": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 16000,
+      "$comment": "題幹。〔待決 Q-M8〕純文字或 Markdown。上限 = question.stem（TEXT，65,535 bytes）÷ 每字最多 4 bytes。"
+    },
+    "payload": {
+      "type": "object",
+      "$comment": "依 judgeType 驗證，見 allOf。"
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "judgeType": { "const": "choice" } }, "required": ["judgeType"] },
+      "then": { "properties": { "payload": { "$ref": "payload/choice.schema.json" } } }
+    },
+    {
+      "if": { "properties": { "judgeType": { "const": "fill" } }, "required": ["judgeType"] },
+      "then": { "properties": { "payload": { "$ref": "payload/fill.schema.json" } } }
+    }
+  ],
+  "$comment": "〔待決 Q-M7〕language、〔待決 Q-M9〕explanation、〔待決 Q-I7〕審核狀態，決定後加入 properties。"
+}

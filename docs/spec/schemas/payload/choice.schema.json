@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "choice payload（第一階段草案）",
+  "description": "選擇題的題型專屬資料，含答案。對外輸出前必須經 Judge.toPublicPayload 移除 answer。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["options", "answer"],
+  "properties": {
+    "options": {
+      "type": "array",
+      "minItems": 2,
+      "$comment": "〔待決 Q-J2〕選項數上限、是否打亂。選項 id 不可重複（語意檢查）。",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "text"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]{1,8}$",
+            "$comment": "改版時必須保持不變，作答紀錄以 id 記錄選了哪個選項。"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "$comment": "〔待決 Q-M8〕格式與題幹相同。"
+          }
+        }
+      }
+    },
+    "answer": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[a-z0-9]{1,8}$" },
+      "$comment": "正確選項的 id，每個都必須存在於 options（語意檢查）。〔待決 Q-J2〕若只允許單選，加 maxItems: 1。"
+    }
+  }
+}

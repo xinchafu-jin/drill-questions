@@ -4,7 +4,7 @@
 
 ## 怎麼用
 
-1. 只挑「相依」都已完成、「阻擋」的待決問題都已有決定的任務（[06-open-questions.md](06-open-questions.md)）。目前不受任何待決問題阻擋的只有 T04、T06。
+1. 只挑「相依」都已完成、「阻擋」的待決問題都已有決定的任務（[06-open-questions.md](06-open-questions.md)）。目前不受任何待決問題阻擋的只有 T06。
 2. 每個任務要滿足下方「共同完成條件」與自己的「驗收」。
 3. 任務若預估超過半天，先回報並提出拆分方式，不要自行擴大或縮小範圍。
 4. Q-R1 可能把某些任務保留給你親手寫，AI 代理開工前要先確認。
@@ -52,11 +52,11 @@
 
 ### T01 後端專案骨架與本機 MySQL
 - 相依：無
-- 阻擋：Q-G1、Q-G2、Q-G4
+- 阻擋：Q-G1、Q-G2、Q-G4、Q-G6
 - 範圍：
   - `backend/`：Spring Boot 4.0.3、Java 21（toolchain）。建置工具依 Q-G1，座標與根套件依 Q-G2，套件結構依 Q-G4。
   - 依賴名稱以 start.spring.io 產生的 4.0.3 專案為準：webmvc、validation、actuator、flyway 與 `org.flywaydb:flyway-mysql`、`com.mysql:mysql-connector-j`、test、Testcontainers（MySQL）。Security 在 T12 加入；資料存取依賴在 T05 依 Q-G3 加入。
-  - repo 根目錄 `compose.yaml`：本機開發用 `mysql:9.7`，帳密從 `.env` 讀取；提交 `.env.example`。
+  - repo 根目錄 `compose.yaml`：本機開發用 MySQL 8（映像標籤依 Q-G6），帳密從 `.env` 讀取；提交 `.env.example`。
   - `application.yaml` 與 profile `local`、`test`、`prod`；資料庫連線與所有秘密只從環境變數讀取。
   - Actuator 只開放 `health`。
   - 建立 `backend/src/main/resources/db/migration/`（先放 `.gitkeep`）。
@@ -64,7 +64,7 @@
 - 驗收：
   1. 乾淨 clone 後執行建置指令成功。
   2. `docker compose up -d` 後以 `local` profile 啟動，`curl -s localhost:8080/actuator/health` 回 `{"status":"UP"}`。
-  3. 至少一個 `@SpringBootTest` 以 Testcontainers `mysql:9.7` 啟動成功。
+  3. 至少一個 `@SpringBootTest` 以 Testcontainers 啟動成功，映像標籤與 `compose.yaml` 相同（Q-G6）。
   4. `git ls-files` 沒有 `.env`；`.env.example` 只有範例值。
   5. `/actuator/env` 等其他 actuator 端點回 404。
 
@@ -93,14 +93,14 @@
 
 ### T04 Flyway V1～V3 與 migration 測試
 - 相依：T01
-- 阻擋：無
+- 阻擋：Q-G6
 - 說明：開工時若 Q-A2、Q-A4、Q-A7、Q-A8、Q-M7、Q-M9、Q-P7 已有決定，直接取消 01 §3 對應欄位的註解；未決定就先建立基礎版本，日後以新 migration 加欄位。
 - 範圍：依 01 §3 建立 `V1__create_user_tables.sql`、`V2__create_question_bank_tables.sql`、`V3__create_attempt_table.sql`，內容與規格一致。
 - 驗收：
-  1. Testcontainers（`mysql:9.7`）整合測試：`flyway_schema_history` 有版本 1、2、3 且都成功。
+  1. Testcontainers（Q-G6 決定的 MySQL 映像）整合測試：`flyway_schema_history` 有版本 1、2、3 且都成功。
   2. 同一測試查 `information_schema`，01 §4 列出的每個唯一鍵與索引、01 §3 的每個外鍵都存在。
   3. 再次啟動不會重跑 migration。
-  4. PR 描述記錄 Spring Boot 啟動時是否出現 Flyway 對 MySQL 9.7 的版本警告（01 §2）。
+  4. PR 描述記錄 Spring Boot 啟動時是否出現 Flyway 的 MySQL 版本警告（01 §2：8.4 會出現，8.0 不會）。
 
 ### T05 資料存取層
 - 相依：T04

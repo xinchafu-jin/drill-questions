@@ -1,6 +1,8 @@
 # 刷題系統實作規格
 
-這份規格把「刷題系統規劃」（Claude Docs，rev 19，[連結](https://claude.ai/artifact/79m4rQHMo1B62PU4uzdhzv)）轉成可交給 AI 代理實作的格式。規劃文件沒寫的地方一律列為待決問題（81 題），規格沒有替你做決定。
+這份規格把「刷題系統規劃」（Claude Docs，rev 19，[連結](https://claude.ai/artifact/79m4rQHMo1B62PU4uzdhzv)）轉成可交給 AI 代理實作的格式。規劃文件沒寫的地方一律列為待決問題（82 題），規格沒有替你做決定。
+
+技術限制：Java 21、Spring Boot 4.0.3（Jackson 3、Spring Security 7）、Angular 22、MySQL 8。MySQL 原為 9.7 LTS，2026-09-25 更正為 8；規劃文件 rev 19 尚未同步修改，小版本見 Q-G6。
 
 ## 檔案
 
@@ -50,7 +52,7 @@
 
 | 項目 | 方法 | 結果 |
 | --- | --- | --- |
-| DDL | Flyway 11.14.1 對 `mysql:9.7`（9.7.2）執行 01 的 9 個 migration；另把所有〔待決〕欄位取消註解再執行一次 | 兩次都成功；索引與外鍵與規格一致 |
+| DDL | Flyway 11.14.1 分別對 `mysql:8.0`（8.0.46）與 `mysql:8.4`（8.4.11）執行 01 的 9 個 migration；另把所有〔待決〕欄位取消註解再執行一次 | 兩個版本、兩種變體都成功；兩版本的索引與外鍵相同且與規格一致；8.4 有 Flyway 版本警告 |
 | JSON Schema | python-jsonschema 4.26.0 | 5 個 schema 合法；2 個範例通過；12 個錯誤範例全被拒絕；8 個 answer 案例符合預期 |
 | JSON 範例 | 解析 01～06 中所有 `json` 區塊 | 27 個全部合法 |
 | Java 型別 | 03 §2.1 以 JDK 21 + Jackson 3.0.4 編譯，並以假判題器實際執行 | 編譯成功；標準答案判為 CORRECT、答錯判為 WRONG、重複註冊時啟動失敗 |

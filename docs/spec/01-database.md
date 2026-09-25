@@ -1,6 +1,6 @@
 # 01 資料表結構與 Flyway migration
 
-第一階段需要 3 個 migration、7 張表（§3），DDL 已用 Flyway 11.14.1 在 `mysql:9.7`（9.7.2）實際執行成功。其餘資料表要等對應的待決問題決定後才建立（§5），第二～七階段只列草案（§6）。
+第一階段需要 3 個 migration、7 張表（§3），DDL 已用 Flyway 11.14.1 在 MySQL 8.0（8.0.46）與 8.4（8.4.11）上實際執行成功；要用哪個小版本見 Q-G6。其餘資料表要等對應的待決問題決定後才建立（§5），第二～七階段只列草案（§6）。
 
 ## 1. 範圍
 
@@ -17,7 +17,7 @@ Flyway 規則：
 - 已套用的 migration 不得修改（Flyway 會比對 checksum），修正一律新增 migration。
 - 依賴：`spring-boot-starter-flyway` + `org.flywaydb:flyway-mysql`（Spring Boot 4.0.3 管理 Flyway 11.14.1）。
 - Hibernate（若 Q-G3 選 JPA）不得產生或修改 schema。
-- 整合測試用 Testcontainers 的 `mysql:9.7` 映像執行全部 migration。
+- 整合測試用 Testcontainers 執行全部 migration，映像標籤依 Q-G6（`mysql:8.0` 或 `mysql:8.4`）。
 - 實測紀錄見本節末。
 
 以下是**規格慣例**（規劃文件沒寫，由本規格訂定，可否決）：
@@ -28,7 +28,7 @@ Flyway 規則：
 | 主鍵 | `id BIGINT NOT NULL AUTO_INCREMENT` | 對應 Java `long` |
 | 整數 | 不用 `UNSIGNED` | Java 沒有無號整數，避免映射成更寬的型別 |
 | 約束命名 | `uk_<表>_<欄>`、`idx_<表>_<欄>`、`fk_<表>_<參照表>` | 錯誤訊息可讀 |
-| 字元集 | 每張表明寫 `utf8mb4` / `utf8mb4_0900_ai_ci`（9.7.2 的預設值，已確認） | 中文與 emoji |
+| 字元集 | 每張表明寫 `utf8mb4` / `utf8mb4_0900_ai_ci`（8.0.46 與 8.4.11 的預設值，已確認） | 中文與 emoji |
 | 精確比對 | 識別碼、雜湊、UUID 用 `utf8mb4_bin` 或 `ascii_bin` | 預設定序不分大小寫與重音 |
 | 時間 | `DATETIME(6)` 存 UTC，對應 Java `Instant`；由應用程式寫入（注入 `Clock`），不用資料庫預設值 | 文件：資料庫存 UTC；測試可固定時間 |
 | 日期 | 統計日期用 `DATE`，以 `Asia/Taipei` 切日 | 文件：統計以 Asia/Taipei 切日 |
@@ -38,13 +38,13 @@ Flyway 規則：
 
 JDBC 連線建議加 `connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true`，讓 `Instant` 與 `DATETIME(6)` 互轉不受 JVM 時區影響；T05 必須以測試證明寫入與讀出的時間一致。
 
-實測方式（2026-09-25，供重現）：用 Flyway 11.14.1 官方映像（`redgate/flyway:11.14.1`）連線 `mysql:9.7`（9.7.2）容器執行 `migrate`。V1～V3 加上 §5 全部 6 個條件式 migration 共 9 個都套用成功；把所有 `〔待決〕` 欄位取消註解後再跑一次也成功；information_schema 查得的索引與外鍵和本檔一致。Flyway 會印出以下警告，不影響執行：
+實測方式（2026-09-25，供重現）：用 Flyway 11.14.1 官方映像（`redgate/flyway:11.14.1`）分別連線 `mysql:8.0`（8.0.46）與 `mysql:8.4`（8.4.11）容器執行 `migrate`。兩個版本上，V1～V3 加上 §5 全部 6 個條件式 migration 共 9 個都套用成功；把所有 `〔待決〕` 欄位取消註解後再跑一次也成功；兩個版本建出的索引與外鍵完全相同，也和本檔一致。8.0 沒有任何警告；8.4 會印出以下警告，不影響執行：
 
 ```text
-WARNING: Using MySQL 9.7 which is newer than the version Flyway has been verified with. The latest verified version of MySQL is 8.1.
+WARNING: Using MySQL 8.4 which is newer than the version Flyway has been verified with. The latest verified version of MySQL is 8.1.
 ```
 
-T04 要在 PR 中記錄 Spring Boot 啟動時是否出現同一行警告。
+T04 要在 PR 中記錄 Spring Boot 啟動時是否出現這行警告（Q-G6 選 8.4 時會出現）。
 
 ## 3. 第一階段 migration
 
@@ -219,7 +219,7 @@ erDiagram
 
 ## 5. 條件式 migration
 
-以下 migration 只有在對應問題決定「要」之後才建立，版本號接在當時最後一個 migration 之後。DDL 都已在 9.7.2 實測。
+以下 migration 只有在對應問題決定「要」之後才建立，版本號接在當時最後一個 migration 之後。DDL 都已在 8.0.46 與 8.4.11 實測。
 
 ### 5.1 登入狀態（Q-A1）
 

@@ -24,7 +24,7 @@
 - Java 21。
 - Spring Boot 4.0.3。版本一律由 Boot 的 BOM 管理，不自行覆寫。2026-09-25 查自 `spring-boot-dependencies-4.0.3.pom`：Spring Framework 7.0.5、Spring Security 7.0.3、Jackson 3.0.4、Hibernate 7.2.4.Final、Flyway 11.14.1、MySQL Connector/J 9.6.0、Testcontainers 2.0.3。
 - Angular 22（目前 22.2.x）；Node.js ≥ 22.22.3 或 ≥ 24.15.0（Angular 22.2 的 engines）。
-- MySQL 9.7 LTS，系統與練習用同版；測試映像 `mysql:9.7`。
+- MySQL 8，系統與練習用同版。小版本（8.0 或 8.4 LTS）與映像標籤：〔待決 Q-G6〕。
 - 新增 BOM 以外的依賴前是否要先詢問：〔待決 Q-R5〕
 
 ## 後端
@@ -81,7 +81,7 @@
 
 ## 測試
 
-- 後端：JUnit 5；整合測試用 Testcontainers 實際啟動 MySQL（文件），映像 `mysql:9.7`。Docker Hub 限流時可改用 `mirror.gcr.io/library/mysql:9.7`。
+- 後端：JUnit 5；整合測試用 Testcontainers 實際啟動 MySQL（文件），映像標籤依 Q-G6，且與本機 `compose.yaml` 相同。Docker Hub 限流時可改用 `mirror.gcr.io/library/mysql:<標籤>`。
 - 前端：CLI 預設的 Vitest；端對端測試用 Playwright。〔提案〕
 - 每條驗收條件都要有對應的自動化測試；做不到的，在 PR 寫明手動驗證步驟與結果。
 - 不得為了讓 CI 通過而停用、跳過或刪除測試。
@@ -106,5 +106,6 @@
 - hibernate-core 7.2.4 內建的 JSON 映射只支援 Jackson 2；Spring ORM 7.0.5 與 spring-boot-hibernate 4.0.3 沒有 Jackson 3 版本（影響 Q-G3）。
 - `com.networknt:json-schema-validator` 3.0.7 原生依賴 Jackson 3（影響 Q-I5）。
 - Angular 22.2 的 `ng new` 預設：standalone、Vitest、strict、2025 檔名風格（沒有 `.component` 後綴）；zoneless 會詢問。
-- `mysql:9.7`（9.7.2）預設字元集 utf8mb4、定序 utf8mb4_0900_ai_ci。
-- Flyway 11.14.1 能對 MySQL 9.7 執行 migration，但會警告 9.7 未經驗證（01 §2）。
+- `mysql:8.0`（8.0.46）與 `mysql:8.4`（8.4.11）的預設字元集都是 utf8mb4、定序 utf8mb4_0900_ai_ci。
+- Flyway 11.14.1 對 MySQL 8.0 沒有警告；對 8.4 會警告未經驗證，但 migration 能正常執行（01 §2）。
+- MySQL 8.0 已於 2026 年 4 月結束支援，之後沒有安全性修補（影響 Q-G6）。

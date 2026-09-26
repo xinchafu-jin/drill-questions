@@ -35,14 +35,14 @@
 - b. Gradle（Groovy DSL）
 - c. Maven
 
-決定：Gradle；使用 Groovy DSL 或 Kotlin DSL 尚未確認。（2026-09-26）
+決定：b，Gradle（Groovy DSL，`build.gradle`）。（2026-09-26）
 
 ### Q-G2 Java 套件根名稱與專案座標
 阻擋：T01
 
 需要 groupId、artifactId、根套件名稱。套件名稱不能有連字號，例如 `io.github.<帳號>.drill`。
 
-決定：
+決定：groupId `io.github.xinchafujin`、artifactId `drill-questions`、根套件 `io.github.xinchafujin.drill`。（2026-09-26）
 
 ### Q-G3 資料存取技術
 阻擋：T05

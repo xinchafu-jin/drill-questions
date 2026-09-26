@@ -623,14 +623,14 @@ Nginx、Certbot、Google OAuth 的正式環境設定都需要網域（本機開�
 - c. a + b
 - d. 都不用，自寫 SCSS
 
-決定：
+決定：b，Tailwind CSS（`ng new --style=tailwind`），不使用 Angular Material。（2026-09-26）
 
 ### Q-F2 介面語言
 阻擋：T20、T21
 - a. 只有繁體中文
 - b. 中英雙語（需要 i18n）
 
-決定：
+決定：a，只有繁體中文。（2026-09-26）
 
 ### Q-F3 第一階段「手機版」包含哪些項目
 阻擋：T22、T23、T25、T26
@@ -668,7 +668,7 @@ Angular 22 的 `ng new` 會詢問是否不使用 zone.js。
 - a. zoneless
 - b. 使用 zone.js
 
-決定：
+決定：a，zoneless。（2026-09-26）
 
 ---
 

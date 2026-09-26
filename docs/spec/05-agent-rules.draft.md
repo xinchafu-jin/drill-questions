@@ -77,7 +77,7 @@
 - 只用相對路徑 `/api/...` 呼叫後端；開發時靠 dev server proxy，正式環境靠 Nginx。
 - 作答送出時帶 `clientAttemptId`（`crypto.randomUUID()`），重送沿用同一個值。
 - 題目內容不得用 `innerHTML` 直接輸出；若 Q-M8 決定用 Markdown，必須先 sanitize。
-- UI 元件庫：〔待決 Q-F1〕。介面語言：〔待決 Q-F2〕。zoneless：〔待決 Q-F6〕。
+- 樣式用 Tailwind CSS，不引入 Angular Material（Q-F1）。介面只有繁體中文（Q-F2）。zoneless，狀態用 signals（Q-F6）。
 
 ## 測試
 

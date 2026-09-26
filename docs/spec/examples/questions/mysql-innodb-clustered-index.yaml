@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../schemas/question.schema.json
+# 範例：選擇題（第一階段草案）。標〔待決〕的欄位格式尚未決定，見 docs/spec/06-open-questions.md。
+key: mysql-innodb-clustered-index   # 〔待決 Q-I3〕
+subject: mysql                      # 〔待決 Q-M1〕
+unit: index
+judgeType: choice
+difficulty: 2                       # 〔待決 Q-M3〕
+device: mobile                      # 〔待決 Q-M4〕
+version: MySQL 8.0
+tags: [innodb, index]
+source: https://example.com/original  # 〔待決 Q-I8〕
+license: MIT                          # 〔待決 Q-I8〕
+stem: InnoDB 的聚簇索引（clustered index）使用哪一種資料結構？
+payload:
+  options:
+    - id: a
+      text: Hash
+    - id: b
+      text: B+Tree
+    - id: c
+      text: R-Tree
+    - id: d
+      text: 跳躍串列（Skip List）
+  answer: [b]

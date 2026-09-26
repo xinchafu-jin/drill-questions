@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../schemas/question.schema.json
+# 範例：填空題（第一階段草案）。標〔待決〕的欄位格式尚未決定，見 docs/spec/06-open-questions.md。
+key: mysql-buffer-pool-size-variable  # 〔待決 Q-I3〕
+subject: mysql                        # 〔待決 Q-M1〕
+unit: tuning
+judgeType: fill
+difficulty: 1                         # 〔待決 Q-M3〕
+device: mobile                        # 〔待決 Q-M4〕
+tags: [innodb, configuration]
+source: https://example.com/original  # 〔待決 Q-I8〕
+license: MIT                          # 〔待決 Q-I8〕
+stem: 設定 InnoDB 緩衝池大小的系統變數名稱是什麼？
+payload:
+  blanks:
+    - id: "1"                         # 數字形式的 id 要加引號
+      accepted: [innodb_buffer_pool_size]

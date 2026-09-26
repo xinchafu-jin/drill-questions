@@ -681,7 +681,7 @@ Angular 22 的 `ng new` 會詢問是否不使用 zone.js。
 - 哪些任務或模組保留給你親手寫（例如 Judge 核心、安全設定、沙箱）？
 - AI 在這些範圍可以做什麼（出草稿、寫測試、code review），不能做什麼？
 
-決定：
+決定：由 AI 挑出值得學習的部分保留給你親手寫：T06 Judge 核心與 registry（介面設計、Spring 依型別注入）、T10 匯入寫入（冪等 upsert、content_hash、revision）、T12 Spring Security 基礎（SecurityFilterChain、session／CSRF）、T17 作答提交（冪等去重與併發）。第六階段沙箱的安全隔離屆時再挑。AI 在這些任務只可出草稿、寫測試、code review，不直接提交實作。（2026-09-26）
 
 ### Q-R2 規範檔名稱與位置
 不阻擋（AI 開工前決定）
@@ -691,7 +691,7 @@ Angular 22 的 `ng new` 會詢問是否不使用 zone.js。
 
 會用哪些 AI 工具實作？（Angular 22 的 `ng new --ai-config` 可另外產生 claude-code、cursor、gemini-cli、open-ai-codex、vscode 的前端規則檔）
 
-決定：
+決定：c。主檔 `AGENTS.md`；`CLAUDE.md` 與 `GEMINI.md` 各只有一行 `@AGENTS.md` 引用。使用工具：Claude Code、Gemini CLI。（2026-09-26）
 
 ### Q-R3 Git 流程
 阻擋：T29（其餘項目在 AI 開工前決定）
@@ -699,7 +699,7 @@ Angular 22 的 `ng new` 會詢問是否不使用 zone.js。
 - commit 訊息格式（例如 Conventional Commits）？
 - 哪個分支觸發自動部署（T29）？
 
-決定：
+決定：你審核並合併；分支由 AI 決定：`main` 為主分支（開保護，只能經 PR 合併）；每個任務一個分支 `task/T<編號>-<簡述>`（例：`task/T01-backend-skeleton`）、一個 PR，PR 標題以 `[T01]` 開頭；合併用 squash；commit 訊息用 Conventional Commits；`main` 有新 commit 時觸發自動部署（T29）。（2026-09-26）
 
 ### Q-R4 程式碼註解、commit、PR 的語言
 不阻擋（AI 開工前決定）

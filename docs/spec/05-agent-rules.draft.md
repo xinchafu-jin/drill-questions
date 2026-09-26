@@ -1,6 +1,6 @@
 # AI 代理規範（草稿）
 
-> 這是草稿。標〔提案〕的規則是規劃文件沒寫、由本草稿提出的，請確認或刪除；標〔待決 Q-xx〕的地方等 [06-open-questions.md](06-open-questions.md) 決定後補上。定稿後依 Q-R2 放到 repo 根目錄（`AGENTS.md` 或 `CLAUDE.md`），並刪除這段說明。
+> 這是草稿。標〔提案〕的規則是規劃文件沒寫、由本草稿提出的，請確認或刪除；標〔待決 Q-xx〕的地方等 [06-open-questions.md](06-open-questions.md) 決定後補上。定稿後放到 repo 根目錄的 `AGENTS.md`，另建只含 `@AGENTS.md` 一行的 `CLAUDE.md` 與 `GEMINI.md`（Q-R2），並刪除這段說明。
 
 ## 專案
 
@@ -17,7 +17,7 @@
 
 ## 保留給人類親手寫的範圍
 
-〔待決 Q-R1〕決定之前，每個任務開工前都要先確認是否由 AI 實作。已知：沙箱題的 setup／check 腳本由人類撰寫，AI 只可出草稿（文件：題目來源與審核）。
+以下任務由人類親手寫（Q-R1）：T06、T10、T12、T17。AI 在這些任務只可出草稿、寫測試、code review，不得直接提交實作。沙箱題的 setup／check 腳本也由人類撰寫，AI 只可出草稿（文件：題目來源與審核）。
 
 ## 技術版本（不得更改）
 
@@ -95,8 +95,10 @@
 
 ## Git 與 PR
 
-- 分支、PR、合併流程與 commit 格式：〔待決 Q-R3〕。註解、commit、PR 的語言：〔待決 Q-R4〕。
-- 一個任務一個 PR。〔提案〕
+- `main` 受保護，只能經 PR 合併；人類審核並以 squash 合併（Q-R3）。
+- 每個任務一個分支 `task/T<編號>-<簡述>`、一個 PR，PR 標題以 `[Txx]` 開頭（Q-R3）。
+- commit 訊息用 Conventional Commits（例：`feat(judge): add choice judge`）（Q-R3）。
+- 註解、commit、PR 的語言：〔待決 Q-R4〕。
 - PR 描述包含：任務編號、每條驗收條件的證據、用到的待決問題決定、偏離規格之處（應該沒有）。
 - 不 force-push 共用分支；不用 `--no-verify` 跳過檢查。
 - 格式化與靜態檢查工具：〔待決 Q-R6〕。

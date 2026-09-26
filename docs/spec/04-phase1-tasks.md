@@ -7,7 +7,7 @@
 1. 只挑「相依」都已完成、「阻擋」的待決問題都已有決定的任務（[06-open-questions.md](06-open-questions.md)）。目前不受任何待決問題阻擋的只有 T06。
 2. 每個任務要滿足下方「共同完成條件」與自己的「驗收」。
 3. 任務若預估超過半天，先回報並提出拆分方式，不要自行擴大或縮小範圍。
-4. Q-R1 可能把某些任務保留給你親手寫，AI 代理開工前要先確認。
+4. T06、T10、T12、T17 由你親手寫（Q-R1），AI 只出草稿、測試與 review。
 
 ## 共同完成條件
 
@@ -83,7 +83,7 @@
 ### T03 CI
 - 相依：T01、T02
 - 阻擋：Q-G1
-- 範圍：`.github/workflows/ci.yml`，push 與 pull_request 觸發（分支規則依 Q-R3）。後端 job：Temurin 21，建置與測試（含 Testcontainers）。前端 job：Node 24.15 以上，`npm ci`、build、test。快取依賴。
+- 範圍：`.github/workflows/ci.yml`，push 與 pull_request 觸發（所有 `task/*` 分支與 `main`，Q-R3）。後端 job：Temurin 21，建置與測試（含 Testcontainers）。前端 job：Node 24.15 以上，`npm ci`、build、test。快取依賴。
 - 驗收：
   1. PR 上兩個 job 都通過。
   2. 任何測試失敗都會讓 job 失敗（不使用 `continue-on-error`）。
@@ -363,9 +363,9 @@
 ### T29 自動部署
 - 相依：T03、T28
 - 阻擋：Q-D3、Q-D4、Q-D5、Q-R3
-- 範圍：`.github/workflows/deploy.yml`：部署分支（Q-R3）有新 commit 時，建置後端與前端映像、推到映像倉庫（Q-D3）、部署到 VM（Q-D3、Q-D4）、執行冒煙測試；秘密放 GitHub Secrets（文件：GitHub Actions 自動部署）。Flyway 在應用程式啟動時執行 migration。
+- 範圍：`.github/workflows/deploy.yml`：`main` 有新 commit 時（Q-R3），建置後端與前端映像、推到映像倉庫（Q-D3）、部署到 VM（Q-D3、Q-D4）、執行冒煙測試；秘密放 GitHub Secrets（文件：GitHub Actions 自動部署）。Flyway 在應用程式啟動時執行 migration。
 - 驗收：
-  1. 部署分支有新 commit 後 workflow 成功，VM 上執行的映像標籤等於該 commit SHA。
+  1. `main` 有新 commit 後 workflow 成功，VM 上執行的映像標籤等於該 commit SHA。
   2. 冒煙測試（`/` 回 200、`/api/me` 回 401）失敗時 workflow 失敗。
   3. workflow log 中沒有秘密。
 

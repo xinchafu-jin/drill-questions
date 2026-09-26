@@ -98,7 +98,7 @@
 - `main` 受保護，只能經 PR 合併；人類審核並以 squash 合併（Q-R3）。
 - 每個任務一個分支 `task/T<編號>-<簡述>`、一個 PR，PR 標題以 `[Txx]` 開頭（Q-R3）。
 - commit 訊息用 Conventional Commits（例：`feat(judge): add choice judge`）（Q-R3）。
-- 註解、commit、PR 的語言：〔待決 Q-R4〕。
+- commit 訊息中英雙語：第一行英文（Conventional Commits），內文中文說明（Q-R4）。程式碼註解與 PR 描述的語言：〔待決 Q-R4〕。
 - PR 描述包含：任務編號、每條驗收條件的證據、用到的待決問題決定、偏離規格之處（應該沒有）。
 - 不 force-push 共用分支；不用 `--no-verify` 跳過檢查。
 - 格式化與靜態檢查工具：〔待決 Q-R6〕。

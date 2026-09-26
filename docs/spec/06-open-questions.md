@@ -35,7 +35,7 @@
 - b. Gradle（Groovy DSL）
 - c. Maven
 
-決定：
+決定：Gradle；使用 Groovy DSL 或 Kotlin DSL 尚未確認。（2026-09-26）
 
 ### Q-G2 Java 套件根名稱與專案座標
 阻擋：T01
@@ -66,7 +66,7 @@
 - a. 依功能分：`auth`、`question`、`judge`、`attempt`、`practice`、`importer`…，各自包含 web／service／repository
 - b. 依層分：`controller`、`service`、`repository`、`domain`
 
-決定：
+決定：b，依層分（controller、service、repository、domain）。（2026-09-26）
 
 ### Q-G5 本 repo 的授權條款
 阻擋：T31
@@ -89,7 +89,7 @@
 
 建議：b。8.0 已不再有安全性修補，而網站是公開上線的。
 
-決定：
+決定：b，MySQL 8.4 LTS；映像標籤 `mysql:8.4`。（2026-09-26）
 
 ---
 

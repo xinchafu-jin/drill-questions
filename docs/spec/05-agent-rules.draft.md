@@ -24,7 +24,7 @@
 - Java 21。
 - Spring Boot 4.0.3。版本一律由 Boot 的 BOM 管理，不自行覆寫。2026-09-25 查自 `spring-boot-dependencies-4.0.3.pom`：Spring Framework 7.0.5、Spring Security 7.0.3、Jackson 3.0.4、Hibernate 7.2.4.Final、Flyway 11.14.1、MySQL Connector/J 9.6.0、Testcontainers 2.0.3。
 - Angular 22（目前 22.2.x）；Node.js ≥ 22.22.3 或 ≥ 24.15.0（Angular 22.2 的 engines）。
-- MySQL 8，系統與練習用同版。小版本（8.0 或 8.4 LTS）與映像標籤：〔待決 Q-G6〕。
+- MySQL 8.4 LTS，系統與練習用同版；映像標籤 `mysql:8.4`（Q-G6）。
 - 新增 BOM 以外的依賴前是否要先詢問：〔待決 Q-R5〕
 
 ## 後端
@@ -34,7 +34,7 @@
 - starter 名稱以 start.spring.io 選 4.0.3 產生的為準，例如 `spring-boot-starter-webmvc`、`spring-boot-starter-flyway`、`spring-boot-starter-security-oauth2-client`。Flyway 另需 `org.flywaydb:flyway-mysql`。
 - 設定檔用 `application.yaml`〔提案〕；秘密只從環境變數讀取。
 - 注入 `java.time.Clock`，不直接呼叫 `Instant.now()` 或 `LocalDate.now()`，讓測試能固定時間、測切日。〔提案〕
-- 套件結構：〔待決 Q-G4〕。資料存取技術：〔待決 Q-G3〕。
+- 套件結構依層分：`controller`、`service`、`repository`、`domain`（Q-G4）。資料存取技術：〔待決 Q-G3〕。
 
 ### Jackson 3
 
